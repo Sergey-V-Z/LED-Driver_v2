@@ -48,19 +48,21 @@
 /* USER CODE BEGIN Variables */
 
 /* USER CODE END Variables */
-osThreadId defaultTaskHandle;
+osThreadId MainTaskHandle;
+osThreadId ModBus_TaskHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-   
+//   extern "C"
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void const * argument);
+void ModBusTask(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /* GetIdleTaskMemory prototype (linked to static allocation support) */
-void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize );
+extern "C" void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize );
 
 /* USER CODE BEGIN GET_IDLE_TASK_MEMORY */
 static StaticTask_t xIdleTaskTCBBuffer;
@@ -102,9 +104,13 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+  /* definition and creation of MainTask */
+  osThreadDef(MainTask, StartDefaultTask, osPriorityNormal, 0, 512);
+  MainTaskHandle = osThreadCreate(osThread(MainTask), NULL);
+
+  /* definition and creation of ModBus_Task */
+  osThreadDef(ModBus_Task, ModBusTask, osPriorityNormal, 0, 512);
+  ModBus_TaskHandle = osThreadCreate(osThread(ModBus_Task), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -128,6 +134,24 @@ void StartDefaultTask(void const * argument)
     osDelay(1);
   }
   /* USER CODE END StartDefaultTask */
+}
+
+/* USER CODE BEGIN Header_ModBusTask */
+/**
+* @brief Function implementing the ModBus_Task thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_ModBusTask */
+void ModBusTask(void const * argument)
+{
+  /* USER CODE BEGIN ModBusTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END ModBusTask */
 }
 
 /* Private application code --------------------------------------------------*/
