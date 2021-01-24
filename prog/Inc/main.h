@@ -37,7 +37,32 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
+typedef struct 
+{
 
+  uint32_t OffStatusChannel;
+  uint32_t EnableChannel;
+  uint32_t DIMChannel;
+  uint32_t CurrentChannel;
+  
+   
+}Channel_t;  
+//******************
+//
+// DESCRIPTION:
+//  Общие настройки для устройства
+//
+// CREATED: 13.09.2020, by Ierixon-HP
+//
+// FILE: main.h
+//
+typedef struct 
+{
+  uint32_t BaudRate;
+  uint32_t  SlaveAddress;
+  Channel_t Channels[25];  
+   
+}settings_t;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/

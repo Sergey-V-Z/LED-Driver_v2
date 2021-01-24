@@ -1195,6 +1195,15 @@
             </file>
         </group>
         <group>
+            <name>Libs</name>
+            <file>
+                <name>$PROJ_DIR$\..\librarys\flash_spi.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\librarys\flash_spi.h</name>
+            </file>
+        </group>
+        <group>
             <name>ModBus</name>
             <file>
                 <name>$PROJ_DIR$\..\Middlewares\Third_Party\modbus\mb.c</name>
@@ -1222,6 +1231,9 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\..\Middlewares\Third_Party\modbus\rtu\mbrtu.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Middlewares\Third_Party\modbus\functions\mbutils.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\Middlewares\Third_Party\modbus\port\portevent.c</name>

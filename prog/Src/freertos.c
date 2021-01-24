@@ -26,7 +26,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
+#include "mb.h"
+#include "mbport.h"
 
+using namespace std;
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,6 +49,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+extern SPI_HandleTypeDef hspi3;
+extern settings_t settings;
 
 /* USER CODE END Variables */
 osThreadId MainTaskHandle;
@@ -128,9 +133,20 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
+  uint8_t TxBuff[10] = {0x05};
+  uint8_t RxBuff[50] = {0};
+  uint16_t Size = 1;
+  HAL_StatusTypeDef StatusSPI2;
   /* Infinite loop */
   for(;;)
   {
+    // тестирование флешки
+    HAL_GPIO_WritePin(SPI3_CS_GPIO_Port, SPI3_CS_Pin, GPIO_PIN_RESET);
+    StatusSPI2 = HAL_SPI_Transmit(&hspi3, TxBuff, 1, 100);
+    HAL_Delay(100);
+    StatusSPI2 = HAL_SPI_Receive(&hspi3, RxBuff, Size, 100);
+    StatusSPI2 = StatusSPI2;
+    HAL_GPIO_WritePin(SPI3_CS_GPIO_Port, SPI3_CS_Pin, GPIO_PIN_SET);
     osDelay(1);
   }
   /* USER CODE END StartDefaultTask */
@@ -146,17 +162,57 @@ void StartDefaultTask(void const * argument)
 void ModBusTask(void const * argument)
 {
   /* USER CODE BEGIN ModBusTask */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
+   /* Infinite loop */
+   eMBErrorCode eStatus = eMBInit( MB_RTU, settings.SlaveAddress, 3, settings.BaudRate, MB_PAR_NONE );
+   eStatus = eMBEnable();
+   //HAL_TIM_Base_Start_IT(&htim17);
+   for(;;)
+   {
+      eMBPoll();
+      //taskYIELD();
+   }
   /* USER CODE END ModBusTask */
 }
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-     
+/*description https://www.freemodbus.org/api/group__modbus__registers.html*/
+//0x04
+eMBErrorCode
+eMBRegInputCB( UCHAR * pucRegBuffer, USHORT usAddress, USHORT usNRegs )
+{
+   eMBErrorCode    eStatus = MB_ENOERR;
+   
+   return eStatus;
+}
+//0x03 0x06 0x10
+eMBErrorCode
+eMBRegHoldingCB( UCHAR * pucRegBuffer, USHORT usAddress, USHORT usNRegs, eMBRegisterMode eMode )
+{
+   //uint8_t CMD[5] = {0};
+   volatile HAL_StatusTypeDef status;
+   
+   if(usAddress == 0 ){}
+   else{usAddress--;} 
+   
+   eMBErrorCode    eStatus = MB_ENOERR;
+   
+
+   return eStatus;
+}
+
+// 0x01 0x0f 0x05
+eMBErrorCode
+eMBRegCoilsCB( UCHAR * pucRegBuffer, USHORT usAddress, USHORT usNCoils, eMBRegisterMode eMode )
+{
+   return MB_ENOREG;
+}
+//0x02
+eMBErrorCode
+eMBRegDiscreteCB( UCHAR * pucRegBuffer, USHORT usAddress, USHORT usNDiscrete )
+{
+   return MB_ENOREG;
+}       
 /* USER CODE END Application */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

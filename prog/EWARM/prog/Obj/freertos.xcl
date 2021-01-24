@@ -26,6 +26,18 @@ D:\Radio\Jobe\LED Driver_v2\prog\EWARM/../Drivers/CMSIS/Device/ST/STM32F3xx/Incl
 -I
 D:\Radio\Jobe\LED Driver_v2\prog\EWARM/../Drivers/CMSIS/Include
 -I
+D:\Radio\Jobe\LED Driver_v2\prog\EWARM\..\Middlewares\Third_Party\modbus
+-I
+D:\Radio\Jobe\LED Driver_v2\prog\EWARM\..\Middlewares\Third_Party\modbus\functions
+-I
+D:\Radio\Jobe\LED Driver_v2\prog\EWARM\..\Middlewares\Third_Party\modbus\include
+-I
+D:\Radio\Jobe\LED Driver_v2\prog\EWARM\..\Middlewares\Third_Party\modbus\port
+-I
+D:\Radio\Jobe\LED Driver_v2\prog\EWARM\..\Middlewares\Third_Party\modbus\rtu
+-I
+D:\Radio\Jobe\LED Driver_v2\prog\EWARM\..\librarys
+-I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\arm\inc
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\arm\inc\c
@@ -47,6 +59,18 @@ D:\Radio\Jobe\LED Driver_v2\prog\Middlewares\Third_Party\FreeRTOS\Source\portabl
 D:\Radio\Jobe\LED Driver_v2\prog\Drivers\CMSIS\Device\ST\STM32F3xx\Include
 -I
 D:\Radio\Jobe\LED Driver_v2\prog\Drivers\CMSIS\Include
+-I
+D:\Radio\Jobe\LED Driver_v2\prog\Middlewares\Third_Party\modbus
+-I
+D:\Radio\Jobe\LED Driver_v2\prog\Middlewares\Third_Party\modbus\functions
+-I
+D:\Radio\Jobe\LED Driver_v2\prog\Middlewares\Third_Party\modbus\include
+-I
+D:\Radio\Jobe\LED Driver_v2\prog\Middlewares\Third_Party\modbus\port
+-I
+D:\Radio\Jobe\LED Driver_v2\prog\Middlewares\Third_Party\modbus\rtu
+-I
+D:\Radio\Jobe\LED Driver_v2\prog\librarys
 -D__CHAR_BITS__=8
 -D__CHAR_MAX__=0xff
 -D__CHAR_MIN__=0
