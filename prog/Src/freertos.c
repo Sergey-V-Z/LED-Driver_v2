@@ -50,8 +50,9 @@ using namespace std;
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
 extern SPI_HandleTypeDef hspi3;
+extern SPI_HandleTypeDef hspi1;
 extern settings_t settings;
-
+int start = 1;
 /* USER CODE END Variables */
 osThreadId MainTaskHandle;
 osThreadId ModBus_TaskHandle;
@@ -133,21 +134,25 @@ void MX_FREERTOS_Init(void) {
 void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
-  uint8_t TxBuff[10] = {0x05};
-  uint8_t RxBuff[50] = {0};
-  uint16_t Size = 1;
-  HAL_StatusTypeDef StatusSPI2;
+  uint8_t TxBuff[4] = {0xff};
+  //uint8_t RxBuff[50] = {0};
+  uint16_t Size = 4;
+  HAL_StatusTypeDef StatusSPI1;
+  HAL_GPIO_WritePin(MR_GPIO_Port, MR_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(OE_GPIO_Port, OE_Pin, GPIO_PIN_RESET);
+  
   /* Infinite loop */
   for(;;)
   {
-    // тестирование флешки
-    HAL_GPIO_WritePin(SPI3_CS_GPIO_Port, SPI3_CS_Pin, GPIO_PIN_RESET);
-    StatusSPI2 = HAL_SPI_Transmit(&hspi3, TxBuff, 1, 100);
-    HAL_Delay(100);
-    StatusSPI2 = HAL_SPI_Receive(&hspi3, RxBuff, Size, 100);
-    StatusSPI2 = StatusSPI2;
-    HAL_GPIO_WritePin(SPI3_CS_GPIO_Port, SPI3_CS_Pin, GPIO_PIN_SET);
-    osDelay(1);
+    if(start){
+      start = 0;
+      
+      StatusSPI1 = HAL_SPI_Transmit(&hspi1, TxBuff, Size, 100);
+      StatusSPI1 = StatusSPI1;
+      HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, GPIO_PIN_SET);
+      osDelay(1);
+      HAL_GPIO_WritePin(SPI1_CS_GPIO_Port, SPI1_CS_Pin, GPIO_PIN_RESET);
+    }
   }
   /* USER CODE END StartDefaultTask */
 }

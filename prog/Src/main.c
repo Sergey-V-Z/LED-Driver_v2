@@ -29,7 +29,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "flash_spi.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,8 +49,9 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-settings_t settings = {115200, 0x0D, 0};
+settings_t settings = {0}; //{115200, 0x0D, 0};
 bool resetSettings = false;
+flash *FlashP;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -110,15 +111,22 @@ int main(void)
   MX_TIM17_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+  flash Flash;
+//  pins_spi_t cs = {SPI3_CS_GPIO_Port, SPI3_CS_Pin};
+//  pins_spi_t wp = {SPI3_WP_GPIO_Port, SPI3_WP_Pin};
+//  pins_spi_t hold = {SPI3_HOLD_GPIO_Port, SPI3_HOLD_Pin};
   
-  //Flash_ReadParams(&settings, StartSettingsAddres);
+  FlashP = &Flash;
+  FlashP->Init(&hspi3, 0, {SPI3_CS_GPIO_Port, SPI3_CS_Pin}, {SPI3_WP_GPIO_Port, SPI3_WP_Pin}, {SPI3_HOLD_GPIO_Port, SPI3_HOLD_Pin});
+  
+  FlashP->Read(&settings);
   
   if((settings.BaudRate == 0) | (settings.BaudRate == 0xFFFFFFFF) | resetSettings)
     {
       
       settings.BaudRate = 115200;
       settings.SlaveAddress = 0x0D;
-      //FLASH_WriteSettings(settings, StartSettingsAddres);
+      FlashP->Write(settings);
     } 
   /* USER CODE END 2 */
 
